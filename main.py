@@ -19,22 +19,32 @@ class AI_Planner_Request(BaseModel):
     temperature: float = Field(default=0.2, gt=0.0, le=1.0)
     planned_steps: list[Task_Step]
 
-@app.post("/items/")
+class Step_Report(BaseModel):
+    step_id: int 
+    status: str = Field(description="Completed or Skipped")
+    findings: str = Field(description="This shows the findings by the LLM in each step.")
+
+class AI_Final_Report(BaseModel):
+    summary: str = Field(description="A concise summary of the overall execution.")
+    detailed_findings: list[Step_Report]    
+    next_recommended_actions: list[str]
+
+@app.post("/items/structured/")
 async def run_agent_planner(
     agent_request: Annotated[AI_Planner_Request, Body(embed=True)]
 ):
     if not agent_request.planned_steps:
-        raise HTTPException(status_code=400, detail="The Agent cannot an Empty Planner")
+        raise HTTPException(status_code=400, detail="The Agent cannot run an Empty Planner")
     
-    execution_instruction = ""
-    
-    for step in agent_request.planned_steps:
-        execution_instruction += f"-Step {step.step_id} [{step.tools_required}]: {step.action}\n"
-    
+    execution_instruction = "".join(
+        [f"-Step {s.step_id} [{s.tools_required}]: {s.action}\n"
+         for s in agent_request.planned_steps]
+    )
+
     prompt = f"""
 You are an elite AI agent executor. 
 You ultimate goal is: {agent_request.user_goal}
-Execute these sequential steps perfectly: {execution_instruction}
+Use these sequential steps perfectly for the report generation: {execution_instruction}
 Provide a comprehensive final report explaining these things perfectly and in a proper manner.
 """
     
@@ -42,14 +52,18 @@ Provide a comprehensive final report explaining these things perfectly and in a 
         response = ai_client.models.generate_content(
             model = "gemini-2.5-flash",
             contents = prompt,
-            config = {"temperature": agent_request.temperature}
+            config = {
+                "temperature": agent_request.temperature,
+                "response_mime_type": "application/json",
+                "response_schema": AI_Final_Report
+            }
         )
 
         return {
             "status": "success",
             "goal_processed": agent_request.user_goal,
-            "steps_executed_count": agent_request.planned_steps,
-            "agent_final_report": response.text
+            "steps_executed_count": len(agent_request.planned_steps),
+            "agent_final_report": response.parsed
         }
     
     except Exception as e:
