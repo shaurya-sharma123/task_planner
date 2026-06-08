@@ -2,6 +2,10 @@
 
 A lightweight, robust FastAPI backend that accepts structured multi-step objectives, validates incoming payloads using Pydantic, and generates structured execution reports using Google's Gemini 2.5 Flash model.
 
+### 🌐 Live Deployment Links
+* **Live Web App (Frontend):** https://task-planner-ai.streamlit.app
+---
+
 This project demonstrates modern AI backend development concepts including:
 
 * FastAPI endpoint creation
