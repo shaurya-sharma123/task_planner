@@ -15,8 +15,10 @@ This project demonstrates modern AI backend development concepts including:
 ## 🛠️ Tech Stack
 
 * **Language:** Python 3.10+
-* **Framework:** FastAPI
+* **Frontend Framework:** Streamlit
+* **Backend Framework:** FastAPI
 * **Data Validation:** Pydantic v2
+* **HTTP Client:** Requests
 * **Server:** Uvicorn
 * **AI Integration:** Google GenAI SDK
 * **Model:** Gemini 2.5 Flash
@@ -26,13 +28,11 @@ This project demonstrates modern AI backend development concepts including:
 
 ## ✨ Features
 
-* Accepts user-defined goals and execution plans
-* Validates request payloads using Pydantic models
-* Supports configurable LLM temperature settings
-* Generates structured JSON reports from Gemini
-* Enforces output consistency through response schemas
-* Returns type-safe parsed responses
-* Built-in API error handling
+* **Interactive UI:** Build your task pipeline step-by-step dynamically in a beautiful dark-themed interface.
+* **Payload Validation:** Front-end sanity checks paired with strict backend Pydantic enforcement.
+* **Configurable Hyperparameters:** Control LLM creativity via a real-time temperature slider.
+* **Structured Outputs:** Enforces strict structural output rules on Gemini to bypass text-parsing boilerplate and use type-safe `response.parsed` properties.
+* **Resilient Error Handling:** Gracefully handles offline backends, missing fields, or validation failures.
 
 ---
 
@@ -204,6 +204,12 @@ Open the Swagger UI:
 
 ```text
 http://127.0.0.1:8000/docs
+```
+
+Start the Streamlit Frontend:
+
+```bash
+streamlit run main.py
 ```
 
 ---
