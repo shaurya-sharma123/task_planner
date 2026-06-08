@@ -4,9 +4,24 @@ from fastapi import FastAPI, Body, HTTPException
 from google import genai
 from pydantic import BaseModel, Field
 from dotenv import load_dotenv
+from fastapi.middleware.cors import CORSMiddleware
 
 load_dotenv()
 app = FastAPI(title="AI Agent Task Planner")
+
+origins = [
+    "http://localhost:8501",
+    "http://127.0.0.1:8501",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"]
+)
+
 ai_client = genai.Client()
 
 class Task_Step(BaseModel):
