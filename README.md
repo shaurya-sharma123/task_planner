@@ -9,6 +9,7 @@ This project demonstrates modern AI backend development concepts including:
 * Structured AI outputs using response schemas
 * Deterministic JSON generation from LLMs
 * Error handling and API design best practices
+* Cross-Origin Resource Sharing (CORS) middleware implementation for secure client-server communication.
 
 ---
 
@@ -33,6 +34,7 @@ This project demonstrates modern AI backend development concepts including:
 * **Configurable Hyperparameters:** Control LLM creativity via a real-time temperature slider.
 * **Structured Outputs:** Enforces strict structural output rules on Gemini to bypass text-parsing boilerplate and use type-safe `response.parsed` properties.
 * **Resilient Error Handling:** Gracefully handles offline backends, missing fields, or validation failures.
+* **CORS Enabled:** Fully configured to allow secure cross-origin communication between the frontend interface (`port 8501`) and the backend API (`port 8000`).
 
 ---
 
