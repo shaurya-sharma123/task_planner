@@ -91,7 +91,7 @@ if st.session_state.steps_list:
         else:
 
             with st.spinner("Talking to FastAPI Backend..."):
-                backend_url = "http://127.0.0.1:8000/items/structured/"
+                backend_url = "https://task-planner-vqgi.onrender.com/items/structured/"
                 payload = {
                     "agent_request": {
                         "user_goal": user_goal,
